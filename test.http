@@ -1,0 +1,35 @@
+
+
+GET http://localhost:7000/products
+
+###
+
+
+GET http://localhost:7000/product/21
+
+###
+
+POST http://localhost:7000/product
+Content-Type: application/json
+ 
+  {
+    "id": "45",
+    "name": "LG Monitor",
+    "price": 8900,
+    "quantity": 4999
+  }
+  
+###
+
+GET http://localhost:7000/product/45
+
+###
+
+DELETE http://localhost:7000/product/45
+Content-Type: application/json=
+  
+###
+
+GET http://localhost:7000/product/21
+
+###
