@@ -1,5 +1,6 @@
 
 
+
 GET http://localhost:7000/products
 
 ###
@@ -20,6 +21,19 @@ Content-Type: application/json
   }
   
 ###
+
+PATCH http://localhost:7000/product
+Content-Type: application/json
+ 
+  {
+    "id": "45",
+    "name": "LG Monitor 34 inch",
+    "price": 10000,
+    "quantity": 4999
+  }
+  
+###
+
 
 GET http://localhost:7000/product/45
 
