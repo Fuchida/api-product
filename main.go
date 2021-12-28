@@ -33,13 +33,8 @@ import (
 )
 
 
-var products []domain.Product = inventory.Bootstrap()
+var _ []domain.Product = inventory.Bootstrap()
 
-// removes a product from  inventory
-func removeProductByIndex(index int) {
-	products = append(products[:index], products[index+1:]...)
-
-}
 
 func addProduct(c *gin.Context) {
 	var newProduct domain.Product
@@ -48,12 +43,12 @@ func addProduct(c *gin.Context) {
 		return
 	}
 
-	if inventory.ProductExists(newProduct, products) {
+	if inventory.Exists(newProduct) {
 		c.IndentedJSON(http.StatusConflict, "product already exists")
 		return
 
 	} else {
-		products = append(products, newProduct)
+		_ = inventory.Add(newProduct)
 		c.IndentedJSON(http.StatusAccepted, newProduct)
 	}
 }
@@ -61,7 +56,7 @@ func addProduct(c *gin.Context) {
 func getProductByID(c *gin.Context) {
 	id := c.Param("id")
 
-	for _, product := range products {
+	for _, product := range inventory.List() {
 		if product.ID == id {
 			c.IndentedJSON(http.StatusOK, product)
 			return
@@ -72,14 +67,14 @@ func getProductByID(c *gin.Context) {
 }
 
 func getProducts(c *gin.Context) {	
-	c.IndentedJSON(http.StatusOK, products)
+	c.IndentedJSON(http.StatusOK, inventory.List())
 }
 
 func deleteProduct(c *gin.Context) {
 	id := c.Param("id")
-	for index, product := range products {
+	for index, product := range inventory.List() {
 		if product.ID == id {
-			removeProductByIndex(index)
+			_ = inventory.Remove(index)
 			message := fmt.Sprintf("Product id: %s, has been deleted", product.ID)
 
 			c.IndentedJSON(http.StatusAccepted, message)
@@ -97,18 +92,13 @@ func updateProduct(c *gin.Context) {
 		return
 	}
 
-	if inventory.ProductExists(patch, products) {
-		for index, product := range products {
-			if patch.ID == product.ID {
-				products[index] = patch
-
-				// TODO: can we log the full representation of the product ?
-				message := fmt.Sprintf("Product: %s, has been updated", product.ID)
-
-				c.IndentedJSON(http.StatusAccepted, message)
-				return
-			}
-		}
+	if inventory.Exists(patch) {
+		// MARK: can we log the full representation of the product ?
+		product := inventory.Update(patch)
+		message := fmt.Sprintf("Product: %s, has been updated", product.ID)
+		
+		c.IndentedJSON(http.StatusAccepted, message)
+		
 	} else {
 		message := fmt.Sprintf("Product id: %s, was not found ", patch.ID)
 		c.IndentedJSON(http.StatusNotFound, message)
