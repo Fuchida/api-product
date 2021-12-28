@@ -7,7 +7,7 @@ Package main implements a HTTP web service api.
 	. Add new product  ✅
 	. Delete product by id ✅
 	. Update existing product ✅
-	. Move services and domains to own packages
+	. Move services and domains to own packages ✅
 	. Add unit tests for above functionality
 	. log happy paths and failure paths
 	. Persist products to an sqlite database (create, update, delete)
@@ -32,9 +32,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 var _ []domain.Product = inventory.Bootstrap()
-
 
 func addProduct(c *gin.Context) {
 	var newProduct domain.Product
@@ -66,7 +64,7 @@ func getProductByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, message)
 }
 
-func getProducts(c *gin.Context) {	
+func getProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, inventory.List())
 }
 
@@ -96,9 +94,9 @@ func updateProduct(c *gin.Context) {
 		// MARK: can we log the full representation of the product ?
 		product := inventory.Update(patch)
 		message := fmt.Sprintf("Product: %s, has been updated", product.ID)
-		
+
 		c.IndentedJSON(http.StatusAccepted, message)
-		
+
 	} else {
 		message := fmt.Sprintf("Product id: %s, was not found ", patch.ID)
 		c.IndentedJSON(http.StatusNotFound, message)
