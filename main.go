@@ -3,10 +3,11 @@
 Package main implements a HTTP web service api.
 	. List existing products ✅
 	. Lookup product by id ✅
-	. Add new product  ✅
 	. Reject duplicate product ✅
+	. Add new product  ✅
 	. Delete product by id ✅
-	. Update existing product
+	. Update existing product ✅
+	. Move services and domains to own packages
 	. Add unit tests for above functionality
 	. log happy paths and failure paths
 	. Persist products to an sqlite database (create, update, delete)
@@ -23,18 +24,16 @@ Package main implements a HTTP web service api.
 package main
 
 import (
+	"api_product/domain"
+	"api_product/inventory"
 	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type product struct {
-	ID       string  `json:"id"`
-	Name     string  `json:"name"`
-	Price    float64 `json:"price"`
-	Quantity int32   `json:"quantity"`
-}
+
+var products []domain.Product = inventory.Bootstrap()
 
 // removes a product from  inventory
 func removeProductByIndex(index int) {
@@ -42,31 +41,14 @@ func removeProductByIndex(index int) {
 
 }
 
-// check if a products exists in the  inventory of products
-// TODO: update to return bool for existance and index of product
-// 		will enable other functions like deleteProduct to not loop twice
-func productExists(p product, items []product) bool {
-	for _, product := range items {
-		if product.ID == p.ID {
-			return true
-		}
-	}
-	return false
-}
-
-var products = []product{
-	{ID: "21", Name: "Nintendo Switch", Price: 399.90, Quantity: 2000},
-	{ID: "18", Name: "Office Desk", Price: 200.00, Quantity: 5000},
-}
-
 func addProduct(c *gin.Context) {
-	var newProduct product
+	var newProduct domain.Product
 
 	if err := c.BindJSON(&newProduct); err != nil {
 		return
 	}
 
-	if productExists(newProduct, products) {
+	if inventory.ProductExists(newProduct, products) {
 		c.IndentedJSON(http.StatusConflict, "product already exists")
 		return
 
@@ -89,7 +71,7 @@ func getProductByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, message)
 }
 
-func getProducts(c *gin.Context) {
+func getProducts(c *gin.Context) {	
 	c.IndentedJSON(http.StatusOK, products)
 }
 
@@ -109,13 +91,13 @@ func deleteProduct(c *gin.Context) {
 }
 
 func updateProduct(c *gin.Context) {
-	var patch product
+	var patch domain.Product
 
 	if err := c.BindJSON(&patch); err != nil {
 		return
 	}
 
-	if productExists(patch, products) {
+	if inventory.ProductExists(patch, products) {
 		for index, product := range products {
 			if patch.ID == product.ID {
 				products[index] = patch
