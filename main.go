@@ -10,7 +10,7 @@ Package main implements a HTTP web service api.
     . Move services and domains to own packages ✅
     . Add unit tests for above functionality
 		. packages ✅
-		. main.go # TODO need Gin readding
+		. api routes # TODO need Gin readding
     . log happy paths and failure paths
     . Persist products to an sqlite database (create, update, delete)
     . send events to messaging system
@@ -105,12 +105,18 @@ func updateProduct(c *gin.Context) {
 	}
 }
 
-func main() {
+func setupRouter() *gin.Engine {
 	router := gin.Default()
+
 	router.GET("/products", getProducts)
 	router.GET("/product/:id", getProductByID)
 	router.POST("/product", addProduct)
 	router.PATCH("/product/", updateProduct)
 	router.DELETE("product/:id", deleteProduct)
-	router.Run("localhost:7000")
+	return router
+}
+
+func main() {
+	router := setupRouter()
+	router.Run(":7000")
 }
