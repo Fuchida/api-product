@@ -2,6 +2,7 @@ package inventory
 
 import (
 	"api_product/domain"
+	"reflect"
 )
 
 var products = []domain.Product{}
@@ -15,12 +16,15 @@ func Bootstrap() []domain.Product {
 	return products
 }
 
-// check if a products exists in the  inventory of products
-// TODO: update to return bool for existance and index of product
-// 		will enable other functions like deleteProduct to not loop twice
-func Exists(p domain.Product) bool {
-	for _, product := range List() {
-		if product.ID == p.ID {
+/* check if a products exists in the  inventory of products
+*/ 		
+func Exists(product domain.Product) bool {
+/*
+TODO: update to return bool for existance and index of product
+	will enable other functions like deleteProduct to not loop twice
+*/
+	for _, item := range List() {
+		if reflect.DeepEqual(item, product) {
 			return true
 		}
 	}
