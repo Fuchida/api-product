@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func Test_Boostrap(t *testing.T){
+func TestBoostrap(t *testing.T){
     expected := 2
 
     products = Bootstrap()
@@ -20,7 +20,7 @@ func Test_Boostrap(t *testing.T){
     }
 }
 
-func Test_Exists(t *testing.T){
+func TestExists(t *testing.T){
     _ = Bootstrap()
     defer removeAll()
     
@@ -45,7 +45,7 @@ func Test_Exists(t *testing.T){
 
 }
 
-func Test_List(t *testing.T){
+func TestList(t *testing.T){
     expected := 0
     received := len(List())
     
@@ -68,7 +68,7 @@ func Test_List(t *testing.T){
     }
 }
 
-func Test_Add(t *testing.T){
+func TestAdd(t *testing.T){
     expected := true
     
     _ = Bootstrap()
@@ -94,7 +94,7 @@ func Test_Add(t *testing.T){
     }
 }
 
-func Test_Update(t *testing.T) {
+func TestUpdate(t *testing.T) {
     _ = Bootstrap()
     defer removeAll()
     
@@ -116,7 +116,7 @@ func Test_Update(t *testing.T) {
     
 }
 
-func Test_Remove(t *testing.T){
+func TestRemove(t *testing.T){
     _ = Bootstrap()
     defer removeAll()
     
@@ -141,7 +141,7 @@ func Test_Remove(t *testing.T){
     }
 }
 
-func Test_RemoveAll(t *testing.T){
+func TestRemoveAll(t *testing.T){
     _ = Bootstrap()
     expected := 0
     
