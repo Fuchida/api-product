@@ -54,8 +54,6 @@ func Update(update domain.Product) domain.Product {
         }
     }
     // MARK: Do we return an error when we fail to update ? 
-	// MARK: Do we return an error when we fail to update ? 
-    // MARK: Do we return an error when we fail to update ? 
     // 		 currently we just return an empty zero value Product
     return domain.Product{}
 }
