@@ -10,14 +10,14 @@ Package main implements a HTTP web service api.
     . Move services and domains to own packages ✅
     . Add unit tests for above functionality
 		. packages ✅
-		. api routes # TODO need Gin readding
+		. api routes
     . log happy paths and failure paths
     . Persist products to an sqlite database (create, update, delete)
     . send events to messaging system
         - new product added
         - product deleted
         - product updated
-    . Add metrics to public endpoints
+    . Add promethius metrics for public endpoints
         - list
         - add
         - get
