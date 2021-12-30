@@ -13,15 +13,12 @@ Package main implements a HTTP web service api.
 		. api routes
     . log happy paths and failure paths
     . Persist products to an sqlite database (create, update, delete)
-    . send events to messaging system
+    . send events to a messaging system
         - new product added
         - product deleted
         - product updated
     . Add promethius metrics for public endpoints
-        - list
-        - add
-        - get
-        - delete
+	. Add dockerfile
 */
 package main
 
