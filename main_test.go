@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 )
 
@@ -28,4 +29,27 @@ func TestProductsRoute(t *testing.T) {
 		t.Logf(testLog)
 		t.Errorf(testError)
 	}
+}
+
+func TestGetProductByIDRoute(t *testing.T) {
+	router := setupRouter()
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/product/21", nil)
+	router.ServeHTTP(w, req)
+
+	expectedProduct := domain.Product{ID: "21", Name: "Nintendo Switch Lite", Price: 399.90, Quantity: 2000}
+	var receivedProduct domain.Product
+
+	json.Unmarshal(w.Body.Bytes(), &receivedProduct)
+
+	testLog := "Testing /product/:id route"
+	testError := fmt.Sprintf("Listing product via id failed verification expected ID: %s but received ID: %s",
+		expectedProduct.ID, receivedProduct.ID)
+
+	if !reflect.DeepEqual(expectedProduct, receivedProduct) {
+		t.Logf(testLog)
+		t.Errorf(testError)
+	}
+
 }
