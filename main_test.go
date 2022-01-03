@@ -53,3 +53,7 @@ func TestGetProductByIDRoute(t *testing.T) {
 	}
 
 }
+
+func TestAddProductRoute(t *testing.T {
+
+}

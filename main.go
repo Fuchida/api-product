@@ -1,24 +1,5 @@
 /*
-
-Package main implements a HTTP web service api.
-    . List existing products ✅
-    . Lookup product by id ✅
-    . Reject duplicate product ✅
-    . Add new product  ✅
-    . Delete product by id ✅
-    . Update existing product ✅
-    . Move services and domains to own packages ✅
-    . Add unit tests for above functionality
-		. packages ✅
-		. api routes
-    . log happy paths and failure paths
-    . Persist products to an sqlite database (create, update, delete)
-    . send events to a messaging system
-        - new product added
-        - product deleted
-        - product updated
-    . Add promethius metrics for public endpoints
-	. Add dockerfile
+Exposes API endpoints to perform CRUD operations on Product entities.
 */
 package main
 
