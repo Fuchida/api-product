@@ -33,15 +33,15 @@ func addProduct(c *gin.Context) {
 
 func getProductByID(c *gin.Context) {
 	id := c.Param("id")
+	product, error := inventory.GetInvetoryByID(id)
 
-	for _, product := range inventory.List() {
-		if product.ID == id {
-			c.IndentedJSON(http.StatusOK, product)
-			return
-		}
+	if error != nil {
+		message := fmt.Sprintf("Product id: %s, was not found", id)
+		c.IndentedJSON(http.StatusNotFound, message)
+
+	} else {
+		c.IndentedJSON(http.StatusOK, product)
 	}
-	message := fmt.Sprintf("Product id: %s, was not found", id)
-	c.IndentedJSON(http.StatusNotFound, message)
 }
 
 func getProducts(c *gin.Context) {
