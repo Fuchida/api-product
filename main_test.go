@@ -2,6 +2,8 @@ package main
 
 import (
 	"api_product/domain"
+	"api_product/inventory"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -54,6 +56,27 @@ func TestGetProductByIDRoute(t *testing.T) {
 
 }
 
-func TestAddProductRoute(t *testing.T {
+func TestAddProductRoute(t *testing.T) {
+	expected := true
 
+	router := setupRouter()
+	snes := domain.Product{ID: "756", Name: "Super Nintendo", Price: 399.90, Quantity: 4000}
+	payload, _ := json.Marshal(snes)
+
+	product := []byte(payload)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/product", bytes.NewBuffer(product))
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+	router.ServeHTTP(w, req)
+
+	testLog := "Testing POST on /product route"
+	testError := fmt.Sprintf("Adding product failed expected inventory ID: %s but inventory check failed with %t",
+		snes.ID, inventory.Exists(snes))
+
+	if inventory.Exists(snes) != expected {
+		t.Logf(testLog)
+		t.Errorf(testError)
+	}
 }
