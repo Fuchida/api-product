@@ -89,7 +89,7 @@ func setupRouter() *gin.Engine {
 	router.GET("/products", getProducts)
 	router.GET("/product/:id", getProductByID)
 	router.POST("/product", addProduct)
-	router.PATCH("/product/", updateProduct)
+	router.PATCH("/product", updateProduct)
 	router.DELETE("product/:id", deleteProduct)
 	return router
 }
