@@ -2,6 +2,8 @@ package inventory
 
 import (
 	"api_product/domain"
+	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -21,7 +23,7 @@ func Bootstrap() []domain.Product {
 func Exists(product domain.Product) bool {
 /*
 TODO: update to return bool for existance and index of product
-	will enable other functions like deleteProduct to not loop twice
+    will enable other functions like deleteProduct to not loop twice
 */
     for _, item := range List() {
         if reflect.DeepEqual(item, product) {
@@ -29,6 +31,17 @@ TODO: update to return bool for existance and index of product
         }
     }
     return false
+}
+// provided an id get the first available item with same ID
+func GetInvetoryByID(id string) (domain.Product, error) {
+    for _, item := range List() {
+        if (item.ID == id) {
+            return item, nil
+        }
+    }
+
+    message := fmt.Sprintf("product with id %s not found", id)
+    return domain.Product{}, errors.New(message)
 }
 
 // list the current available inventory

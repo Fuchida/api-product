@@ -94,6 +94,32 @@ func TestAdd(t *testing.T){
     }
 }
 
+func TestGetByID(t *testing.T){
+    expected := "50"
+
+    _ = Bootstrap()
+    defer removeAll()
+
+    segaSaturn := domain.Product{
+        ID: "50",
+        Name: "Sega Saturn",
+        Price: 499.00,
+        Quantity: 516,
+
+    }
+
+    _ = Add(segaSaturn)
+    received, _ := GetInvetoryByID(segaSaturn.ID)
+
+    testLog := "Testing getting an item from the inventory by ID"
+    testError := fmt.Sprintf("Inventory addition verification failed expected: %s but recieved: %s", expected, received.ID)
+
+    if expected != received.ID {
+        t.Logf(testLog)
+        t.Errorf(testError)
+    }
+}
+
 func TestUpdate(t *testing.T) {
     _ = Bootstrap()
     defer removeAll()
