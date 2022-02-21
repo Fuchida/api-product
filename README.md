@@ -11,8 +11,9 @@ A basic REST-ish API that allows you to perform CRUD operations for Products
     . Update existing product ✅
     . Move services and domains to own packages ✅
     . Add unit tests for above functionality
-		. packages ✅
-		. api routes
+		- packages ✅
+		- api routes  ✅
+    . Add automated tests via github actions
     . log happy paths and failure paths
     . Persist products to an sqlite database (create, update, delete)
     . send events to a messaging system
