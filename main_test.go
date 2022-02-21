@@ -80,3 +80,57 @@ func TestAddProductRoute(t *testing.T) {
 		t.Errorf(testError)
 	}
 }
+
+func TestPatchProductRoute(t *testing.T) {
+	expected := true
+
+	router := setupRouter()
+	xbox := domain.Product{ID: "929", Name: "Xbox", Price: 200.00, Quantity: 7000}
+
+	_ = inventory.Add(xbox)
+
+	xbox.Price = 300.00
+	payload, _ := json.Marshal(xbox)
+	patchedProduct := []byte(payload)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("PATCH", "/product", bytes.NewBuffer(patchedProduct))
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+	router.ServeHTTP(w, req)
+
+	testLog := "Testing PATCH on /product route"
+	testError := fmt.Sprintf("Adding product failed expected inventory price: %f but inventory check failed with %t",
+		xbox.Price, inventory.Exists(xbox))
+
+	if inventory.Exists(xbox) != expected {
+		t.Logf(testLog)
+		t.Errorf(testError)
+	}
+}
+
+func TestDeleteProductRoute(t *testing.T) {
+	expected := false
+
+	PS5 := domain.Product{ID: "800", Name: "PS5", Price: 400.00, Quantity: 17000}
+	deletePath := fmt.Sprintf("/product/%s", PS5.ID)
+
+	router := setupRouter()
+	_ = inventory.Add(PS5)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("DELETE", deletePath, nil)
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+	router.ServeHTTP(w, req)
+
+	testLog := "Testing Delete on /product route with id"
+	testError := fmt.Sprintf("Deleting product failed for %s inventory check returned  %t",
+		PS5.Name, inventory.Exists(PS5))
+
+	if inventory.Exists(PS5) != expected {
+		t.Logf(testLog)
+		t.Errorf(testError)
+	}
+
+}
