@@ -1,4 +1,6 @@
 ## Description
+[![Test](https://github.com/Fuchida/api-product/actions/workflows/test.yaml/badge.svg)](https://github.com/Fuchida/api-product/actions/workflows/test.yaml)
+
 A basic REST-ish API that allows you to perform CRUD operations for Products
 
 ## Features
@@ -13,7 +15,7 @@ A basic REST-ish API that allows you to perform CRUD operations for Products
     . Add unit tests for above functionality
 		- packages ✅
 		- api routes  ✅
-    . Add automated tests via github actions
+    . Add automated tests via github actions ✅
     . log happy paths and failure paths
     . Persist products to an sqlite database (create, update, delete)
     . send events to a messaging system
